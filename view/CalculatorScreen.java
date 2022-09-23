@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import controller.ButtonListener;
 import model.Calculator;
 
 public class CalculatorScreen {
@@ -50,7 +51,7 @@ public class CalculatorScreen {
         northPanel.setBackground(Color.BLACK);
         display.setEditable(false);
         display.setPreferredSize(new Dimension(275, 85));
-        display.setText("123456789012345678901234567890\n" + "+\n" + "123456789012345678901234567890\n" + "=\n" + "123456789012345678901234567890\n");
+        display.setText(calculator.getFirst().getNumberText());
         cp.add(northPanel, BorderLayout.NORTH);
 
         //Sets up buttons
@@ -60,10 +61,20 @@ public class CalculatorScreen {
         southPanel.setBackground(Color.DARK_GRAY);
         southPanel.setLayout(new GridLayout(5, 1));
 
+        ButtonListener listener = new ButtonListener(this);
         for(int i = 0; i < 10; i++) {
             digitButtons[i] = new JButton("" + i);
-            //ADD LISTENERS
+            digitButtons[i].addActionListener(listener);
         }
+
+        //Add Listeners to Buttons
+        addButton.addActionListener(listener);
+        subButton.addActionListener(listener);
+        divButton.addActionListener(listener);
+        mulButton.addActionListener(listener);
+        modButton.addActionListener(listener);
+        equalButton.addActionListener(listener);
+        clearButton.addActionListener(listener);
 
         //Add buttons manually to each row
         //Then add each row to the south panel
@@ -104,5 +115,49 @@ public class CalculatorScreen {
         row4.add(clearButton);
         southPanel.add(row4);
 
+    }
+
+    public JButton[] getDigitButtons() {
+        return digitButtons;
+    }
+
+    public JButton getAddButton() {
+        return addButton;
+    }
+
+    public Calculator getCalculator() {
+        return calculator;
+    }
+
+    public JButton getClearButton() {
+        return clearButton;
+    }
+
+    public JTextArea getDisplay() {
+        return display;
+    }
+
+    public JButton getDivButton() {
+        return divButton;
+    }
+
+    public JButton getEqualButton() {
+        return equalButton;
+    }
+
+    public JButton getModButton() {
+        return modButton;
+    }
+
+    public JButton getMulButton() {
+        return mulButton;
+    }
+
+    public JButton getSubButton() {
+        return subButton;
+    }
+
+    public JFrame getWindow() {
+        return window;
     }
 }

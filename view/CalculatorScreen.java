@@ -80,32 +80,32 @@ public class CalculatorScreen {
         //Then add each row to the south panel
         JPanel row0 = new JPanel();
         row0.setBackground(Color.DARK_GRAY);
-        row0.add(digitButtons[0]);
         row0.add(digitButtons[1]);
         row0.add(digitButtons[2]);
+        row0.add(digitButtons[3]);
         row0.add(addButton);
         southPanel.add(row0);
 
         JPanel row1 = new JPanel();
         row1.setBackground(Color.DARK_GRAY);
-        row1.add(digitButtons[3]);
         row1.add(digitButtons[4]);
         row1.add(digitButtons[5]);
+        row1.add(digitButtons[6]);
         row1.add(subButton);
         southPanel.add(row1);
 
         JPanel row2 = new JPanel();
         row2.setBackground(Color.DARK_GRAY);
-        row2.add(digitButtons[6]);
         row2.add(digitButtons[7]);
         row2.add(digitButtons[8]);
+        row2.add(digitButtons[9]);
         row2.add(mulButton);
         southPanel.add(row2);
 
         JPanel row3 = new JPanel();
         row3.setBackground(Color.DARK_GRAY);
         row3.add(equalButton);
-        row3.add(digitButtons[9]);
+        row3.add(digitButtons[0]);
         row3.add(modButton);
         row3.add(divButton);
         southPanel.add(row3);

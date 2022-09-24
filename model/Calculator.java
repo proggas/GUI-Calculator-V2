@@ -41,7 +41,7 @@ public class Calculator {
         return resultExists;
     }
 
-    boolean add() {
+    public boolean add() {
         boolean exceedLimit = false;
   
         int[] temp = new int[31];
@@ -71,8 +71,33 @@ public class Calculator {
         }
 
         result.computeSize();
+        result.int_to_text();
         return true;
 
+    }
+
+    public void setOperator(boolean operator) {
+        this.operator = operator;
+    }
+
+    public void setOperatorType(char operatorType) {
+        this.operatorType = operatorType;
+    }
+
+    public void setFirst(UnsignedNumber first) {
+        this.first = first;
+    }
+
+    public void setResult(UnsignedNumber result) {
+        this.result = result;
+    }
+
+    public void setSecond(UnsignedNumber second) {
+        this.second = second;
+    }
+
+    public void setResultExists(boolean resultExists) {
+        this.resultExists = resultExists;
     }
     
 }

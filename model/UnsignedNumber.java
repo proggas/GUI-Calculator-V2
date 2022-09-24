@@ -15,10 +15,15 @@ public class UnsignedNumber {
         numberText = "0";
     }
 
-    public UnsignedNumber(int[] number) {
-        this.number = number;
-        computeSize();
-        int_to_text();
+    public UnsignedNumber(UnsignedNumber copy) {
+        this.size = copy.size;
+        this.isZero = copy.isZero;
+        this.numberText = copy.numberText;
+        this.number = new int[30];
+
+        for(int i = 30 - this.size; i < 30; i++) {
+            this.number[i] = copy.number[i];
+        }
     }
 
     public int[] getNumber() {

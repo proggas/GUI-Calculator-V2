@@ -27,53 +27,120 @@ public class ButtonListener implements ActionListener {
         var button = (JButton)e.getSource();
         Calculator calculator = panel.getCalculator();
         boolean operatorExists = calculator.isOperator();
-        Error_code success;
+        Error_code success = Error_code.SUCCESS;
 
         
         if(button == panel.getAddButton()) {
-            success = Error_code.SUCCESS;
 
             // This takes care of 2 cases
-            // 1.) (A + B = C and then C + D = E) (Equals + Add)
-            // 2.) (A * B + C) (Multiple Operations)
+            // 1.) (A (operator) B = C and then C + D) (Equals + Add)
+            // 2.) (A (operator) B + C) (Multiple Operations)
             if(operatorExists || calculator.isResultExists()) {
                 if(operatorExists) {
-                    success = doOperation();
+                    success = doOperation(calculator);
                 }
 
                 if(success == Error_code.SUCCESS) {
-                    UnsignedNumber result = calculator.getResult();
-                    calculator.setFirst(result);
-                    calculator.setSecond(new UnsignedNumber());
-                    calculator.setResult(new UnsignedNumber());
-
-                    //Change operator and make sure resultExists = FALSE
-                    calculator.setOperatorType('+'); 
-                    calculator.setOperator(true);  
-                    calculator.setResultExists(false);
-                    panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + '+');
+                    multiple_operations(calculator, '+');
                 } else {
                     clear();
                     error(success);
                 }
 
             } else {    //If adding only 2 numbers (A + B), this code executes
-                calculator.setOperatorType('+');
-                calculator.setOperator(true);
-                panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + '+');
+                single_operation(calculator, '+');
             }
 
         } else if(button == panel.getSubButton()) {
 
+            // This takes care of 2 cases
+            // 1.) (A (operator) B = C and then C - D) (Equals + Subtract)
+            // 2.) (A (operator) B - C) (Multiple Operations)
+            if(operatorExists || calculator.isResultExists()) {
+                if(operatorExists) {
+                    success = doOperation(calculator);
+                }
+
+                if(success == Error_code.SUCCESS) {
+                    multiple_operations(calculator, '-');
+
+                } else {
+                    clear();
+                    error(success);
+                }
+
+            } else {    //If subtracting only 2 numbers (A - B), this code executes
+                single_operation(calculator, '-');
+            }
+
+
 
         } else if(button == panel.getMulButton()) {
 
+            // This takes care of 2 cases
+            // 1.) (A (operator) B = C and then C * D) (Equals + Multiply)
+            // 2.) (A (operator) B * C) (Multiple Operations)
+            if(operatorExists || calculator.isResultExists()) {
+                if(operatorExists) {
+                    success = doOperation(calculator);
+                }
+
+                if(success == Error_code.SUCCESS) {
+                    multiple_operations(calculator, '*');
+
+                } else {
+                    clear();
+                    error(success);
+                }
+
+            } else {    //If multiplying only 2 numbers (A * B), this code executes
+                single_operation(calculator, '*');
+            }
+
 
         } else if(button == panel.getDivButton()) {
+            
+            // This takes care of 2 cases
+            // 1.) (A (operator) B = C and then C / D) (Equals + Divide)
+            // 2.) (A (operator) B / C) (Multiple Operations)
+            if(operatorExists || calculator.isResultExists()) {
+                if(operatorExists) {
+                    success = doOperation(calculator);
+                }
 
+                if(success == Error_code.SUCCESS) {
+                    multiple_operations(calculator, '/');
+
+                } else {
+                    clear();
+                    error(success);
+                }
+
+            } else {    //If dividing only 2 numbers (A / B), this code executes
+                single_operation(calculator, '/');
+            }
 
         } else if(button == panel.getModButton()) {
+            
+            // This takes care of 2 cases
+            // 1.) (A (operator) B = C and then C % D) (Equals + Modulo)
+            // 2.) (A (operator) B % C) (Multiple Operations)
+            if(operatorExists || calculator.isResultExists()) {
+                if(operatorExists) {
+                    success = doOperation(calculator);
+                }
 
+                if(success == Error_code.SUCCESS) {
+                    multiple_operations(calculator, '%');
+
+                } else {
+                    clear();
+                    error(success);
+                }
+
+            } else {    //If using modulo on only 2 numbers (A % B), this code executes
+                single_operation(calculator, '%');
+            }
 
         } else if(button == panel.getClearButton()) {
             clear();
@@ -82,7 +149,7 @@ public class ButtonListener implements ActionListener {
             //Only do something if there is an operator, else keep the display as is
             if (operatorExists) {
                 
-                success = doOperation();
+                success = doOperation(calculator);
 
                 if(success == Error_code.SUCCESS) {
                     // Set operator to FALSE and result to TRUE
@@ -102,34 +169,37 @@ public class ButtonListener implements ActionListener {
         } else {
             //Else is for digit buttons
 
-
+            //If a digit is pressed while there is a result, clear the calculator
             if(calculator.isResultExists()) {
                 clear();
             }
 
-
-            //First Number
+            //First number being entered
             if (!operatorExists) {
                 UnsignedNumber first = calculator.getFirst();
                 success = first.insert(button.getText().charAt(0) - '0');
 
+                //If insertion successful, display number
                 if(success == Error_code.SUCCESS) {
                     first.int_to_text();
                     panel.getDisplay().setText(first.getNumberText());
                 } else {
+                    //Error occurs when max limit of 30 is reached (but it doesn't clear the calculator screen)
                     error(success);
                 }
 
                 
-            } else{ //Second Number
+            } else{ //Second number being entered
                 UnsignedNumber second = calculator.getSecond();
                 success = second.insert(button.getText().charAt(0) - '0');
 
+                //If insertion successful, display number
                 if(success == Error_code.SUCCESS) {
                     second.int_to_text();
                     panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + calculator.getOperatorType() +
                                                 "\n" + second.getNumberText());
                 } else {
+                    //Error occurs when max limit of 30 is reached (but it doesn't clear the calculator screen)
                     error(success);
                 }
             }
@@ -138,35 +208,36 @@ public class ButtonListener implements ActionListener {
         
     }
 
-    public Error_code doOperation() {
-        char op = panel.getCalculator().getOperatorType();
+    //Calls calculator operations depending on what the current operator type is
+    public Error_code doOperation(Calculator calculator) {
+        char op = calculator.getOperatorType();
         Error_code success = Error_code.SUCCESS;
         switch(op) {
             case '+': {
-                success = panel.getCalculator().add();
+                success = calculator.add();
             }
             break;
 
             case '-': {
-
+                success = calculator.subtract();
 
             }
             break;
 
             case '*': {
-
+                success = calculator.multiply();
 
             }
             break;
 
             case '/': {
-
+                success = calculator.divide();
 
             }
             break;
 
             case '%': {
-
+                success = calculator.modulo();
 
             }
             break;
@@ -179,6 +250,7 @@ public class ButtonListener implements ActionListener {
         return success;
     }
 
+    //Resets calculator data
     public void clear() {
         Calculator calculator = panel.getCalculator();
         calculator.setOperator(false);
@@ -224,6 +296,28 @@ public class ButtonListener implements ActionListener {
         optionPane.setMessage(msg);
         JDialog dialog = optionPane.createDialog(null, "Error");
         dialog.setVisible(true);
+    }
+
+    // Method called when multiple operations are at work or if an operation is called
+    // right after using equals button
+    public void multiple_operations(Calculator calculator, char op) {
+        UnsignedNumber result = calculator.getResult();
+        calculator.setFirst(result);
+        calculator.setSecond(new UnsignedNumber());
+        calculator.setResult(new UnsignedNumber());
+
+        //Change operator and make sure resultExists = FALSE
+        calculator.setOperatorType(op); 
+        calculator.setOperator(true);  
+        calculator.setResultExists(false);
+        panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + op);
+    }
+
+    //Method called when an operation between 2 numbers is being done (A (operator) B = C)
+    public void single_operation(Calculator calculator, char op) {
+        calculator.setOperatorType(op);
+        calculator.setOperator(true);
+        panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + op);
     }
 
 

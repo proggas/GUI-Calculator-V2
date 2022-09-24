@@ -48,7 +48,7 @@ public class CalculatorScreen {
         JPanel northPanel = new JPanel();
         northPanel.setPreferredSize(new Dimension(300, 100));
         northPanel.add(display);
-        northPanel.setBackground(Color.BLACK);
+        northPanel.setBackground(new java.awt.Color(68, 255, 0));
         display.setEditable(false);
         display.setPreferredSize(new Dimension(275, 85));
         display.setText(calculator.getFirst().getNumberText());
@@ -79,7 +79,7 @@ public class CalculatorScreen {
         //Add buttons manually to each row
         //Then add each row to the south panel
         JPanel row0 = new JPanel();
-        row0.setBackground(Color.DARK_GRAY);
+        row0.setBackground(new java.awt.Color(50, 161, 91));
         row0.add(digitButtons[1]);
         row0.add(digitButtons[2]);
         row0.add(digitButtons[3]);
@@ -87,7 +87,7 @@ public class CalculatorScreen {
         southPanel.add(row0);
 
         JPanel row1 = new JPanel();
-        row1.setBackground(Color.DARK_GRAY);
+        row1.setBackground(new java.awt.Color(153, 153, 102));
         row1.add(digitButtons[4]);
         row1.add(digitButtons[5]);
         row1.add(digitButtons[6]);
@@ -95,7 +95,7 @@ public class CalculatorScreen {
         southPanel.add(row1);
 
         JPanel row2 = new JPanel();
-        row2.setBackground(Color.DARK_GRAY);
+        row2.setBackground(new java.awt.Color(51, 102, 0));
         row2.add(digitButtons[7]);
         row2.add(digitButtons[8]);
         row2.add(digitButtons[9]);
@@ -103,7 +103,7 @@ public class CalculatorScreen {
         southPanel.add(row2);
 
         JPanel row3 = new JPanel();
-        row3.setBackground(Color.DARK_GRAY);
+        row3.setBackground(new java.awt.Color(138, 226, 38));
         row3.add(equalButton);
         row3.add(digitButtons[0]);
         row3.add(modButton);
@@ -111,7 +111,7 @@ public class CalculatorScreen {
         southPanel.add(row3);
 
         JPanel row4 = new JPanel();
-        row4.setBackground(Color.DARK_GRAY);
+        row4.setBackground(new java.awt.Color(81, 112, 46));
         row4.add(clearButton);
         southPanel.add(row4);
 

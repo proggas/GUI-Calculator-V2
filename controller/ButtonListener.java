@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import model.Calculator;
 import model.UnsignedNumber;
+import model.Calculator.Error_code;
 
 import javax.swing.JDialog;
 
@@ -26,10 +27,11 @@ public class ButtonListener implements ActionListener {
         var button = (JButton)e.getSource();
         Calculator calculator = panel.getCalculator();
         boolean operatorExists = calculator.isOperator();
+        Error_code success;
 
         
         if(button == panel.getAddButton()) {
-            boolean success;
+            success = Error_code.SUCCESS;
 
             // This takes care of 2 cases
             // 1.) (A + B = C and then C + D = E) (Equals + Add)
@@ -37,28 +39,23 @@ public class ButtonListener implements ActionListener {
             if(operatorExists || calculator.isResultExists()) {
                 if(operatorExists) {
                     success = doOperation();
-
-                    if(!success) {
-                        clear();
-                        JOptionPane optionPane = new JOptionPane();
-                        optionPane.setMessage("Error with computation.");
-                        JDialog dialog = optionPane.createDialog(null, "Error");
-                        dialog.setVisible(true);
-                    }
                 }
 
-                UnsignedNumber result = calculator.getResult();
-                calculator.setFirst(result);
-                calculator.setSecond(new UnsignedNumber());
-                calculator.setResult(new UnsignedNumber());
+                if(success == Error_code.SUCCESS) {
+                    UnsignedNumber result = calculator.getResult();
+                    calculator.setFirst(result);
+                    calculator.setSecond(new UnsignedNumber());
+                    calculator.setResult(new UnsignedNumber());
 
-                //Change operator and make sure resultExists = FALSE
-                calculator.setOperatorType('+'); 
-                calculator.setOperator(true);  
-                calculator.setResultExists(false);
-                panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + '+');
-                
-                
+                    //Change operator and make sure resultExists = FALSE
+                    calculator.setOperatorType('+'); 
+                    calculator.setOperator(true);  
+                    calculator.setResultExists(false);
+                    panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + '+');
+                } else {
+                    clear();
+                    error(success);
+                }
 
             } else {    //If adding only 2 numbers (A + B), this code executes
                 calculator.setOperatorType('+');
@@ -85,9 +82,9 @@ public class ButtonListener implements ActionListener {
             //Only do something if there is an operator, else keep the display as is
             if (operatorExists) {
                 
-                boolean success = doOperation();
+                success = doOperation();
 
-                if(success) {
+                if(success == Error_code.SUCCESS) {
                     // Set operator to FALSE and result to TRUE
                     calculator.setOperator(false);
                     calculator.setResultExists(true);
@@ -96,10 +93,7 @@ public class ButtonListener implements ActionListener {
                                                 calculator.getResult().getNumberText());
                 } else {
                     clear();
-                    JOptionPane optionPane = new JOptionPane();
-                    optionPane.setMessage("Error with computation.");
-                    JDialog dialog = optionPane.createDialog(null, "Error");
-                    dialog.setVisible(true);
+                    error(success);
                 }
                 
 
@@ -113,21 +107,17 @@ public class ButtonListener implements ActionListener {
                 clear();
             }
 
-            boolean success;
 
             //First Number
             if (!operatorExists) {
                 UnsignedNumber first = calculator.getFirst();
                 success = first.insert(button.getText().charAt(0) - '0');
 
-                if(success) {
+                if(success == Error_code.SUCCESS) {
                     first.int_to_text();
                     panel.getDisplay().setText(first.getNumberText());
                 } else {
-                    JOptionPane optionPane = new JOptionPane();
-                    optionPane.setMessage("Max unsigned integer limit of 30 achieved. Cannot make number any larger.");
-                    JDialog dialog = optionPane.createDialog(null, "Error");
-                    dialog.setVisible(true);
+                    error(success);
                 }
 
                 
@@ -135,15 +125,12 @@ public class ButtonListener implements ActionListener {
                 UnsignedNumber second = calculator.getSecond();
                 success = second.insert(button.getText().charAt(0) - '0');
 
-                if(success) {
+                if(success == Error_code.SUCCESS) {
                     second.int_to_text();
                     panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + calculator.getOperatorType() +
                                                 "\n" + second.getNumberText());
                 } else {
-                    JOptionPane optionPane = new JOptionPane();
-                    optionPane.setMessage("Max unsigned integer limit of 30 achieved. Cannot make number any larger.");
-                    JDialog dialog = optionPane.createDialog(null, "Error");
-                    dialog.setVisible(true);
+                    error(success);
                 }
             }
         }
@@ -151,9 +138,9 @@ public class ButtonListener implements ActionListener {
         
     }
 
-    public boolean doOperation() {
+    public Error_code doOperation() {
         char op = panel.getCalculator().getOperatorType();
-        boolean success = false;
+        Error_code success = Error_code.SUCCESS;
         switch(op) {
             case '+': {
                 success = panel.getCalculator().add();
@@ -201,6 +188,42 @@ public class ButtonListener implements ActionListener {
         calculator.setResultExists(false);
         calculator.setOperator(false);
         panel.getDisplay().setText(calculator.getFirst().getNumberText());
+    }
+
+    //Displays different types of errors to the user
+    public void error(Error_code code) {
+        String msg = "";
+        switch(code) {
+            case INSERTION_FAIL: {
+                msg = "Max unsigned integer limit of 30 achieved. Cannot make number any larger.";
+            }
+            break;
+
+            case NUMBER_OVERFLOW: {
+                msg = "Result is too large.";
+            }
+            break;
+
+            case DIVIDE_BY_ZERO: {
+                msg = "Cannot divide by 0.";
+            }
+            break;
+
+            case LEFT_HAND_SMALLER: {
+                msg = "Cannot have a negative result.";
+            }
+            break;
+
+            case SUCCESS: {
+                msg = "Error_code = SUCCESS. Error in program.";
+            }
+            break;
+        }
+
+        JOptionPane optionPane = new JOptionPane();
+        optionPane.setMessage(msg);
+        JDialog dialog = optionPane.createDialog(null, "Error");
+        dialog.setVisible(true);
     }
 
 

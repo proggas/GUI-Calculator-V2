@@ -1,5 +1,7 @@
 package model;
 
+import model.Calculator.Error_code;
+
 public class UnsignedNumber {
     protected int[] number;
     protected int size;
@@ -72,13 +74,13 @@ public class UnsignedNumber {
     }
 
     //Insert number into array
-    public boolean insert(int num) {
+    public Error_code insert(int num) {
         if(size == 30) {
-            return false;
+            return Error_code.INSERTION_FAIL;
         }
 
         if(num == 0 && isZero) {
-            return true;
+            return Error_code.SUCCESS;
         }
 
         if(isZero) {
@@ -93,6 +95,6 @@ public class UnsignedNumber {
         }
         
 
-        return true;
+        return Error_code.SUCCESS;
     }
 }

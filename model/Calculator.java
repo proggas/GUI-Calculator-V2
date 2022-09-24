@@ -1,6 +1,9 @@
 package model;
 
 public class Calculator {
+
+    public enum Error_code {INSERTION_FAIL, DIVIDE_BY_ZERO, LEFT_HAND_SMALLER, SUCCESS, NUMBER_OVERFLOW};
+
     private UnsignedNumber first;
     private UnsignedNumber second;
     private UnsignedNumber result;
@@ -41,7 +44,7 @@ public class Calculator {
         return resultExists;
     }
 
-    public boolean add() {
+    public Error_code add() {
   
         int currRemainder = 0, prevRemainder = 0;
 
@@ -53,13 +56,13 @@ public class Calculator {
 
         }
             
-        if (currRemainder == 1) {
-            return false;
+        if (currRemainder >= 1) {
+            return Error_code.INSERTION_FAIL;
         }
 
         result.computeSize();
         result.int_to_text();
-        return true;
+        return Error_code.SUCCESS;
 
     }
 

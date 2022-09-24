@@ -82,6 +82,7 @@ public class ButtonListener implements ActionListener {
             clear();
 
         } else if(button == panel.getEqualButton()) {
+            //Only do something if there is an operator, else keep the display as is
             if (operatorExists) {
                 
                 boolean success = doOperation();
@@ -101,9 +102,6 @@ public class ButtonListener implements ActionListener {
                     dialog.setVisible(true);
                 }
                 
-
-            } else {
-
 
             }
 

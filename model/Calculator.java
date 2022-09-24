@@ -42,31 +42,18 @@ public class Calculator {
     }
 
     public boolean add() {
-        boolean exceedLimit = false;
   
-        int[] temp = new int[31];
-        
-        for (int i = 29; i >= 0; i--)
-        {
-            if(i == 0 && ((first.number[i] + second.number[i] + temp[i + 1]) > 9))
-            {
-                exceedLimit = true;
-            }
+        int currRemainder = 0, prevRemainder = 0;
 
-            if (first.number[i] + second.number[i] + temp[i + 1] > 9)
-            {
-                temp[i] = (first.number[i] + second.number[i] + temp[i + 1]) / 10;
-                result.number[i] = (first.number[i] + second.number[i] + temp[i + 1]) % 10;
-            }
-            else
-            {
-                result.number[i] = first.number[i] + second.number[i] + temp[i + 1];
-            }
+        for (int i = 29; i >= 0; i--) {
+
+            currRemainder = (first.number[i] + second.number[i] + prevRemainder) / 10;
+            result.number[i] = (first.number[i] + second.number[i] + prevRemainder) % 10;
+            prevRemainder = currRemainder;
 
         }
             
-        if (exceedLimit)
-        {
+        if (currRemainder == 1) {
             return false;
         }
 

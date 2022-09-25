@@ -74,20 +74,67 @@ public class Calculator {
 
     // Method that adds first and second
     public Error_code add() {
+        Error_code success;
+
+        //Check to see how many operands are negative
+        //If both are positive or both are negative, add them together
+        if((first.isNeg && second.isNeg) || (!first.isNeg && !second.isNeg)) {
+
+            //If both operands are negative, result is negative
+            if((first.isNeg && second.isNeg)) {
+                result.isNeg = true;
+            } else {
+                result.isNeg = false;
+            }
+
+            int currRemainder = 0, prevRemainder = 0;
+
+            //Addition Algorithm
+            for (int i = 39; i >= 0; i--) {
+                currRemainder = (first.number[i] + second.number[i] + prevRemainder) / 10;
+                result.number[i] = (first.number[i] + second.number[i] + prevRemainder) % 10;
+                prevRemainder = currRemainder;
+            }
+                
+            if (currRemainder >= 1) {
+                return Error_code.INSERTION_FAIL;
+            }
+        } else {    //If one operand is negative, use the subtract method
+            boolean first_is_neg = false;
+
+            //Make sure the negative number is second and make the isNeg false
+            if(first.isNeg) {
+                first_is_neg = true;
+                first.isNeg = false;
+
+                Number temp = first;
+                first = second;
+                second = temp;
+
+            } else {
+                second.isNeg = false;
+            }
+
+            //Call subtract method
+            //If the subtraction is somehow unsuccessful (which it shouldn't be), return the Error_code
+            success = subtract();
+            if(success != Error_code.SUCCESS) {
+                return success;
+            }
+                
+            //Put the isNeg back to true and swap back first and second if needed
+            if(first_is_neg) {
+                first.isNeg = true;
+
+                Number temp = first;
+                first = second;
+                second = temp;
+            } else {
+                second.isNeg = true;
+            }
+
+        }
   
-        int currRemainder = 0, prevRemainder = 0;
-
-        //Addition Algorithm
-        for (int i = 39; i >= 0; i--) {
-            currRemainder = (first.number[i] + second.number[i] + prevRemainder) / 10;
-            result.number[i] = (first.number[i] + second.number[i] + prevRemainder) % 10;
-            prevRemainder = currRemainder;
-        }
-            
-        if (currRemainder >= 1) {
-            return Error_code.INSERTION_FAIL;
-        }
-
         result.computeSize();
         result.int_to_text();
         return Error_code.SUCCESS;
@@ -96,38 +143,130 @@ public class Calculator {
 
     // Method that subtracts first and second
     public Error_code subtract() {
+        //Mapping out all of the cases
 
-        // First, check if the left hand side is smaller than right hand side
-        for (int i = 0; i < 40; i++) {
+        //BOTH NEGATIVE
+        //first_smaller = TRUE -> second - first = NONNEGATIVE RESULT (SWAPPING REQUIRED)
+        //Ex) (-9 - -10) -> (-9 + 10) -> (10 - 9) -> 1
 
-            if(first.number[i] < second.number[i]) {
+        //first_smaller = FALSE -> first - second = NEGATIVE RESULT (NO SWAPPING)
+        //Ex) (-10 - -9) -> (-10 + 9) -> -1
 
-                return Error_code.LEFT_HAND_SMALLER;
 
-            } else if(first.number[i] > second.number[i]) {
+        //FIRST POSITIVE, SECOND NEGATIVE
+        //first_smaller = TRUE/FALSE && first_isNeg = FALSE && second_isNeg = TRUE -> first + second = NONNEGATIVE RESULT (NO SWAPPING)
+        //CALL ADD METHOD
+        //IMPORTANT: Need to change second isNeg to false and then change it back to true after addition
+        //Ex1) (9 - -10) -> (9 + 10) -> 19
+        //Ex2) (10 - -9) -> (10 + 9) -> 19
 
-                break;
+
+        //FIRST NEGATIVE, SECOND POSITIVE
+        //first_smaller = TRUE/FALSE -> first + second = NEGATIVE RESULT (NO SWAPPING)
+        //IMPORTANT: Need to change second isNeg to true and then change it back to false after addition
+        //Ex1) (-9 - 10) -> (-9 + -10) -> -19
+        //Ex2) (-10 - 9) -> (-10 + -9) -> -19
+
+        //BOTH POSITIVE
+        //first_smaller = TRUE ->   second - first = NEGATIVE RESULT (SWAPPING REQUIRED)
+        //Ex) (9 - 10) -> -1
+        
+        //first_smaller = FALSE ->   first - second = NONNEGATIVE RESULT (NO SWAPPING)
+        //Ex) (10 - 9) -> 1
+
+
+
+        //First, check how many operands are negatives
+        if((first.isNeg && second.isNeg) || (!first.isNeg && !second.isNeg)) {
+            boolean first_smaller = false;
+
+            //Since both have the same operand, it is important to check if the first operand 
+            //is smaller than second
+            for (int i = 0; i < 40; i++) {
+
+                if(first.number[i] < second.number[i]) {
+                    first_smaller = true;
+                    break;
+
+                } else if(first.number[i] > second.number[i]) {
+                    break;
+                }
+                
             }
-            
+
+            //Deciding swapping and whether the result is negative or not:
+            //All first_smaller = TRUE cases require a swap
+            if(first_smaller && first.isNeg) {
+                result.isNeg = false;
+
+                Number temp = first;
+                first = second;
+                second = temp;
+            } else if(!first_smaller && first.isNeg) {
+                result.isNeg = true;
+
+            } else if(first_smaller) {
+                result.isNeg = true;
+
+                Number temp = first;
+                first = second;
+                second = temp;
+            } else {
+                result.isNeg = false;
+            }
+
+            int prevRemainder = 0, subt = 0;
+
+            //Subtraction Algorithm
+            for (int i = 39; i >= 0; i--) {
+                subt = first.number[i] - prevRemainder - second.number[i];
+                
+                if (subt < 0) {
+                    result.number[i] = (first.number[i] + 10) - prevRemainder - second.number[i];
+                    prevRemainder = 1;
+                }
+                else {
+                    result.number[i] = subt;
+                    prevRemainder = 0;
+                }
+                
+
+            }
+
+            //Swap back if necessary
+            if(first_smaller) {
+                Number temp = first;
+                first = second;
+                second = temp;
+            }
+
+        } else {    //Else case requires calling the add method
+            //If first is negative, the result will be NEGATIVE 
+            //If second is negative, the result will be POSITIVE
+
+            if(first.isNeg) {
+                //Change second isNeg to true and change it back after add is called
+                second.isNeg = true;
+            } else {
+                second.isNeg = false;
+            }
+
+            //Add both operands
+            //If there is overflow, return the Error_code
+            Error_code success = add();
+            if(success != Error_code.SUCCESS) {
+                return success;
+            }
+
+            //Change back the changed isNeg boolean to the original value
+            if(first.isNeg) {
+                second.isNeg = false;
+            } else {
+                second.isNeg = true;
+            }
+
         }
 
-        int prevRemainder = 0, subt = 0;
-
-        //Subtraction Algorithm
-        for (int i = 39; i >= 0; i--) {
-            subt = first.number[i] - prevRemainder - second.number[i];
-            
-            if (subt < 0) {
-                result.number[i] = (first.number[i] + 10) - prevRemainder - second.number[i];
-                prevRemainder = 1;
-            }
-            else {
-                result.number[i] = subt;
-                prevRemainder = 0;
-            }
-            
-
-        }
 
         result.computeSize();
         result.int_to_text();

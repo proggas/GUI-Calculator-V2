@@ -4,7 +4,7 @@ public class Calculator {
 
     //All operations return an Error_code that is used to determine whether the operation was successful or not
     //If an operation is not successful, the Error_code determines the error message the user will receive
-    public enum Error_code {INSERTION_FAIL, DIVIDE_BY_ZERO, LEFT_HAND_SMALLER, SUCCESS, NUMBER_OVERFLOW};
+    public enum Error_code {INSERTION_FAIL, DIVIDE_BY_ZERO, SUCCESS, NUMBER_OVERFLOW};
 
     private Number first;
     private Number second;

@@ -1,19 +1,28 @@
 
 # <p align="center">GUI Calculator</p>
-   
+
+### <p align="center">Old Version</p>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/80555925/192124043-2cccf40d-8896-4bfa-a9b6-d25d43571787.PNG">
 </p>
 
 -------------------------------------------------------------------------------------------------------------------------------
+
+### <p align="center">New Version</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80555925/192164683-89d060bf-1a7c-4c57-abaf-1d524a31d115.PNG">
+</p>
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------
 ## Description
-This is a calculator that can do addition, subtraction, multiplication, division, and modulo on unsigned integers. It was created using Java and its GUI so that you can interact with it.
+This is a calculator that can do addition, subtraction, multiplication, division, and modulo on integers. It was created using Java and its GUI so that you can interact with it.
 
-Negative insertions and negative results aren't allowed.
 
-The integers can be up to 40 digits long.
-
-There are exceptions built into the program (no dividing by zero, no negative results, overflow, etc.), but the program might also have bugs that I wasn't able to find during testing.
+### *Changes From Version 1*
+   - Now supports negative numbers
+   - Cleaner calculator interface (buttons were wonky on the old version)
 
 --------------------------------------------------------------------------------------------------------------------------------
 ## Running the Program

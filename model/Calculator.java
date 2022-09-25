@@ -6,24 +6,24 @@ public class Calculator {
     //If an operation is not successful, the Error_code determines the error message the user will receive
     public enum Error_code {INSERTION_FAIL, DIVIDE_BY_ZERO, LEFT_HAND_SMALLER, SUCCESS, NUMBER_OVERFLOW};
 
-    private UnsignedNumber first;
-    private UnsignedNumber second;
-    private UnsignedNumber result;
+    private Number first;
+    private Number second;
+    private Number result;
     private boolean operator;
     private boolean resultExists;
     private char operatorType;
 
     public Calculator() {
-        first = new UnsignedNumber();
-        second = new UnsignedNumber();
-        result = new UnsignedNumber();
+        first = new Number();
+        second = new Number();
+        result = new Number();
         operator = false;
         resultExists = false;
         operatorType = '+';
     }
 
     //Getters
-    public UnsignedNumber getFirst() {
+    public Number getFirst() {
         return first;
     }
 
@@ -31,11 +31,11 @@ public class Calculator {
         return operatorType;
     }
 
-    public UnsignedNumber getResult() {
+    public Number getResult() {
         return result;
     }
 
-    public UnsignedNumber getSecond() {
+    public Number getSecond() {
         return second;
     }
 
@@ -56,15 +56,15 @@ public class Calculator {
         this.operatorType = operatorType;
     }
 
-    public void setFirst(UnsignedNumber first) {
+    public void setFirst(Number first) {
         this.first = first;
     }
 
-    public void setResult(UnsignedNumber result) {
+    public void setResult(Number result) {
         this.result = result;
     }
 
-    public void setSecond(UnsignedNumber second) {
+    public void setSecond(Number second) {
         this.second = second;
     }
 
@@ -144,7 +144,7 @@ public class Calculator {
         // Make sure the larger number is the first number
         // Later, they'll be swapped back
         if(first.size >= second.size) {
-            UnsignedNumber temp;
+            Number temp;
             temp = first;
             first = second;
             second = temp;
@@ -181,7 +181,7 @@ public class Calculator {
 
         //Swap back first and second if needed
         if(right_larger) {
-            UnsignedNumber temp;
+            Number temp;
             temp = first;
             first = second;
             second = temp;
@@ -230,21 +230,21 @@ public class Calculator {
     public Error_code modulo() {
 
         if(second.isZero) {
-            result = new UnsignedNumber(first);
+            result = new Number(first);
             return Error_code.SUCCESS;
         }
 
         //1. first (dividend) / second (divisor) = result (quotient)
         //   Save quotient in the variable temp
         divide();
-        UnsignedNumber temp = result;
+        Number temp = result;
 
         //2. quotient * second (divisor)
         //   This requires storing first in a temp variable and replacing it with quotient 
         //   Result also needs to be cleared
-        UnsignedNumber first_sec_temp = first;
+        Number first_sec_temp = first;
         first = temp;
-        result = new UnsignedNumber();
+        result = new Number();
         multiply();
 
         //3. dividend - (divisor * quotient)
@@ -256,7 +256,7 @@ public class Calculator {
         first = first_sec_temp;
         first_sec_temp = second;
         second = result;
-        result = new UnsignedNumber();
+        result = new Number();
         subtract();
 
         //4. First and result are correct

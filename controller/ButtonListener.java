@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JDialog;
 import model.Calculator;
-import model.UnsignedNumber;
+import model.Number;
 import model.Calculator.Error_code;
 
 
@@ -151,6 +151,38 @@ public class ButtonListener implements ActionListener {
             //Clears calculator screen
             clear();
 
+        } else if (button == panel.getNegButton()){
+            //If result exists, make the first number equal to result
+            if(calculator.isResultExists()) {
+                first_is_result(calculator);
+            }
+
+            //If operatorExists is false, the first number is being inserted
+            if(!operatorExists) {
+                Number first = calculator.getFirst();
+
+                if(first.isZero() || first.isNeg()) {
+                    first.setNeg(false);
+                } else {
+                    first.setNeg(true);
+                }
+
+                //Display the first number
+                display_first(calculator);
+
+            } else {
+                Number second = calculator.getSecond();
+                
+                if(second.isZero() || second.isNeg()) {
+                    second.setNeg(false);
+                } else {
+                    second.setNeg(true);
+                }
+
+                //Display the second number
+                display_second(calculator);
+            }
+
         } else if(button == panel.getEqualButton()) {
             //Only do something if there is an operator, else keep the display as is
             if (operatorExists) {
@@ -186,13 +218,12 @@ public class ButtonListener implements ActionListener {
 
             //First number being entered
             if (!operatorExists) {
-                UnsignedNumber first = calculator.getFirst();
+                Number first = calculator.getFirst();
                 success = first.insert(button.getText().charAt(0) - '0');
 
                 //If insertion successful, display number
                 if(success == Error_code.SUCCESS) {
-                    first.int_to_text();
-                    panel.getDisplay().setText(first.getNumberText());
+                    display_first(calculator);
                 } else {
                     //Error occurs when max limit of 40 is reached (but it doesn't clear the calculator screen)
                     error(success);
@@ -200,14 +231,12 @@ public class ButtonListener implements ActionListener {
 
                 
             } else{ //Second number being entered
-                UnsignedNumber second = calculator.getSecond();
+                Number second = calculator.getSecond();
                 success = second.insert(button.getText().charAt(0) - '0');
 
                 //If insertion successful, display first (operator) second
                 if(success == Error_code.SUCCESS) {
-                    second.int_to_text();
-                    panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + calculator.getOperatorType() +
-                                                "\n" + second.getNumberText());
+                    display_second(calculator);
                 } else {
                     //Error occurs when max limit of 40 is reached (but it doesn't clear the calculator screen)
                     error(success);
@@ -264,9 +293,9 @@ public class ButtonListener implements ActionListener {
     public void clear() {
         Calculator calculator = panel.getCalculator();
         calculator.setOperator(false);
-        calculator.setFirst(new UnsignedNumber());
-        calculator.setSecond(new UnsignedNumber());
-        calculator.setResult(new UnsignedNumber());
+        calculator.setFirst(new Number());
+        calculator.setSecond(new Number());
+        calculator.setResult(new Number());
         calculator.setResultExists(false);
         calculator.setOperator(false);
         panel.getDisplay().setText(calculator.getFirst().getNumberText());
@@ -312,16 +341,10 @@ public class ButtonListener implements ActionListener {
     //Method called when multiple operations are at work or if an operation is called
     //right after using equals button
     public void multiple_operations(Calculator calculator, char op) {
-        UnsignedNumber result = calculator.getResult();
-        calculator.setFirst(result);
-        calculator.setSecond(new UnsignedNumber());
-        calculator.setResult(new UnsignedNumber());
+        first_is_result(calculator);
 
-        //Change operator and make sure resultExists = FALSE
-        calculator.setOperatorType(op); 
-        calculator.setOperator(true);  
-        calculator.setResultExists(false);
-        panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + op);
+        //Change operator and display
+        single_operation(calculator, op);
     }
 
     //Method called when an operation between 2 numbers is being done (A (operator) B = C)
@@ -329,6 +352,28 @@ public class ButtonListener implements ActionListener {
         calculator.setOperatorType(op);
         calculator.setOperator(true);
         panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + op);
+    }
+
+    //Method makes the first number equal the result while resetting the second and result
+    public void first_is_result(Calculator calculator) {
+        Number result = calculator.getResult();
+        calculator.setFirst(result);
+        calculator.setSecond(new Number());
+        calculator.setResult(new Number());
+        calculator.setResultExists(false);
+    }
+
+    //Displays first number
+    public void display_first(Calculator calculator) {
+        calculator.getFirst().int_to_text();
+        panel.getDisplay().setText(calculator.getFirst().getNumberText());
+    }
+
+    //Displays first (operator) second
+    public void display_second(Calculator calculator) {
+        calculator.getSecond().int_to_text();
+        panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + calculator.getOperatorType() +
+                                    "\n" + calculator.getSecond().getNumberText());
     }
 
 

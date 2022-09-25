@@ -2,28 +2,31 @@ package model;
 
 import model.Calculator.Error_code;
 
-public class UnsignedNumber {
+public class Number {
     //The variables are protected so that the Calculator class can efficiently access
     //them without using getters or having other classes access them
     protected int[] number;
     protected int size;
     protected boolean isZero;
+    protected boolean isNeg;
     protected String numberText;
     final int MAX_LENGTH = 40;
     
     //Default Constructor
-    public UnsignedNumber() {
+    public Number() {
         number = new int[MAX_LENGTH];
         size = 1;
         isZero = true;
+        isNeg = false;
         numberText = "0";
     }
 
     //Copy Constructor
-    public UnsignedNumber(UnsignedNumber copy) {
+    public Number(Number copy) {
         this.size = copy.size;
         this.isZero = copy.isZero;
         this.numberText = copy.numberText;
+        this.isNeg = copy.isNeg;
         this.number = new int[MAX_LENGTH];
 
         for(int i = MAX_LENGTH - this.size; i < MAX_LENGTH; i++) {
@@ -48,9 +51,23 @@ public class UnsignedNumber {
         return numberText;
     }
 
+    public boolean isNeg() {
+        return isNeg;
+    }
+
+    //Setter
+    public void setNeg(boolean isNeg) {
+        this.isNeg = isNeg;
+    }
+
     //Turns the array into a string
     public void int_to_text() {
         numberText = "";
+
+        if(isNeg) {
+            numberText += '-';
+        }
+
         for(int i = MAX_LENGTH - size; i < MAX_LENGTH; i++) {
             numberText += (char) (number[i] + '0');
         }
@@ -59,26 +76,27 @@ public class UnsignedNumber {
     //Computes size of array without leading zeros
     //Also determines if number is 0 or not
     public void computeSize() {
-        int white_space = 0;
+        int leading_white_space = 0;
 
         for (int i = 0; i < MAX_LENGTH; i++) {
             if(number[i] != 0) {
                 break;
             }
             else {
-                white_space++;
+                leading_white_space++;
             }
         }
 
         //If white_space isn't equal to MAX_LENGTH, the number can't be 0
-        if (white_space != MAX_LENGTH) {
-            size = MAX_LENGTH - white_space;
+        if (leading_white_space != MAX_LENGTH) {
+            size = MAX_LENGTH - leading_white_space;
             isZero = false;
         }
         else {
-            //If white_space is equal to MAX_LENGTH, the number has to be 0
+            //If leading_white_space is equal to MAX_LENGTH, the number has to be 0
             size = 1;
             isZero = true;
+            isNeg = false;
         }
     }
 

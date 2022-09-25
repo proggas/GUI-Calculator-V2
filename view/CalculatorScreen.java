@@ -24,6 +24,7 @@ public class CalculatorScreen {
     private JButton modButton;
     private JButton equalButton;
     private JButton clearButton;
+    private JButton negButton;
     private JButton[] digitButtons;
 
     public CalculatorScreen(JFrame window) {
@@ -35,6 +36,7 @@ public class CalculatorScreen {
         mulButton = new JButton("x");
         divButton = new JButton("/");
         modButton = new JButton("%");
+        negButton = new JButton("+/-");
         equalButton = new JButton("=");
         clearButton = new JButton("Clear");
         digitButtons = new JButton[10];
@@ -62,7 +64,7 @@ public class CalculatorScreen {
         //Set up buttons
         JPanel southPanel = new JPanel();
         cp.add(southPanel, BorderLayout.SOUTH);
-        southPanel.setPreferredSize(new Dimension(300, 185));
+        southPanel.setPreferredSize(new Dimension(300, 225));
         southPanel.setLayout(new GridLayout(5, 1));
         
         ButtonListener listener = new ButtonListener(this);
@@ -73,6 +75,7 @@ public class CalculatorScreen {
             digitButtons[i] = new JButton("" + i);
             digitButtons[i].addActionListener(listener);
             digitButtons[i].setBackground(Color.LIGHT_GRAY);
+            digitButtons[i].setPreferredSize(new Dimension(50, 30));
         }
 
         //Add the listener to the other buttons
@@ -83,6 +86,7 @@ public class CalculatorScreen {
         modButton.addActionListener(listener);
         equalButton.addActionListener(listener);
         clearButton.addActionListener(listener);
+        negButton.addActionListener(listener);
 
         //Add buttons manually to each row
         //Then add each row to the south panel
@@ -112,7 +116,7 @@ public class CalculatorScreen {
 
         JPanel row3 = new JPanel();
         row3.setBackground(new java.awt.Color(26, 26, 26));
-        row3.add(equalButton);
+        row3.add(negButton);
         row3.add(digitButtons[0]);
         row3.add(modButton);
         row3.add(divButton);
@@ -120,6 +124,7 @@ public class CalculatorScreen {
 
         JPanel row4 = new JPanel();
         row4.setBackground(new java.awt.Color(26, 26, 26));
+        row4.add(equalButton);
         row4.add(clearButton);
         southPanel.add(row4);
 
@@ -136,9 +141,20 @@ public class CalculatorScreen {
         divButton.setForeground(Color.WHITE);
         modButton.setBackground(Color.GRAY);
         modButton.setForeground(Color.WHITE);
+        negButton.setBackground(Color.GRAY);
+        negButton.setForeground(Color.WHITE);
         equalButton.setBackground(new java.awt.Color(191, 0, 0));
         equalButton.setForeground(Color.WHITE);
 
+        //Change rest of the button sizes
+        clearButton.setPreferredSize(new Dimension(105, 25));
+        equalButton.setPreferredSize(new Dimension(105, 25));
+        addButton.setPreferredSize(new Dimension(50, 30));
+        subButton.setPreferredSize(new Dimension(50, 30));
+        mulButton.setPreferredSize(new Dimension(50, 30));
+        divButton.setPreferredSize(new Dimension(50, 30));
+        negButton.setPreferredSize(new Dimension(50, 30));
+        modButton.setPreferredSize(new Dimension(50, 30));
     }
 
     //Getters
@@ -184,5 +200,9 @@ public class CalculatorScreen {
 
     public JFrame getWindow() {
         return window;
+    }
+
+    public JButton getNegButton() {
+        return negButton;
     }
 }

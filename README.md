@@ -1,5 +1,5 @@
 
-# <p align="center">GUI Calculator</p>
+# <p align="center">GUI Calculator V2</p>
 
 ### <p align="center">Old Version</p>
 <p align="center">

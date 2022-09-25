@@ -11,7 +11,7 @@ This is a calculator that can do addition, subtraction, multiplication, division
 
 Negative insertions and negative results aren't allowed.
 
-The integers can be up to 30 digits long.
+The integers can be up to 40 digits long.
 
 There are exceptions built into the program (no dividing by zero, no negative results, overflow, etc.), but the program might also have bugs that I wasn't able to find during testing.
 

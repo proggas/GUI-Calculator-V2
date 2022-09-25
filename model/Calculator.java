@@ -381,14 +381,19 @@ public class Calculator {
 
     public Error_code modulo() {
 
-        //Before doing any arithmetic, check if the second operand is
-        //0 or negative
+        //Before doing any arithmetic, check if the second operand is 0
         if(second.isZero) {
             result = new Number(first);
             return Error_code.SUCCESS;
-        } else if(second.isNeg) {
-            result = new Number();
-            return Error_code.SUCCESS;
+        } 
+
+        boolean swap = false;
+        //Also check if the second operand is negative
+        //If so, swap their signs
+        if(second.isNeg && !first.isNeg) {
+            swap = true;
+            second.isNeg = false;
+            first.isNeg = true;
         }
 
         //1. first (dividend) / second (divisor) = result (quotient)
@@ -420,9 +425,11 @@ public class Calculator {
         //   The only thing that needs to be changed back is second
         second = first_sec_temp;
 
-        //5. Check if the result is negative
-        //   If so, keep adding the second operand to it until it is no longer negative
-        if (result.isNeg) {
+        //5. Check if only one of the operands is negative
+        if(first.isNeg && !second.isNeg) {
+            
+            //If only the first is negative, the result should be nonnegative so
+            //keep adding the second operand to the result until it is nonnegative
             first_sec_temp = first;
 
             while(result.isNeg) {
@@ -431,6 +438,15 @@ public class Calculator {
             }
 
             first = first_sec_temp;
+        } 
+
+        //If second is negative, the result should be the same as it would be
+        //if only first is negative except the result would be negative
+        if(swap) {
+            swap = true;
+            second.isNeg = true;
+            first.isNeg = false;
+            result.isNeg = true;
         }
 
         result.computeSize();

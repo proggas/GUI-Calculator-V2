@@ -1,4 +1,11 @@
-# Unsigned Integer Calculator
+
+# <p align="center">Unsigned Integer Calculator</p>
+   
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80555925/192124043-2cccf40d-8896-4bfa-a9b6-d25d43571787.PNG">
+</p>
+
+-------------------------------------------------------------------------------------------------------------------------------
 ## Description
 This is a calculator that can do addition, subtraction, multiplication, division, and modulo on unsigned integers. It was created using Java and its GUI so that you can interact with it.
 

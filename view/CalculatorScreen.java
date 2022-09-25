@@ -48,17 +48,18 @@ public class CalculatorScreen {
         JPanel northPanel = new JPanel();
         northPanel.setPreferredSize(new Dimension(300, 100));
         northPanel.add(display);
-        northPanel.setBackground(new java.awt.Color(68, 255, 0));
+        northPanel.setBackground(new java.awt.Color(26, 26, 26));
+
         display.setEditable(false);
         display.setPreferredSize(new Dimension(275, 85));
         display.setText(calculator.getFirst().getNumberText());
+        display.setBackground(new java.awt.Color(240, 240, 240));
         cp.add(northPanel, BorderLayout.NORTH);
 
         //Sets up buttons
         JPanel southPanel = new JPanel();
         cp.add(southPanel, BorderLayout.SOUTH);
         southPanel.setPreferredSize(new Dimension(300, 185));
-        southPanel.setBackground(Color.DARK_GRAY);
         southPanel.setLayout(new GridLayout(5, 1));
 
         ButtonListener listener = new ButtonListener(this);
@@ -79,7 +80,7 @@ public class CalculatorScreen {
         //Add buttons manually to each row
         //Then add each row to the south panel
         JPanel row0 = new JPanel();
-        row0.setBackground(new java.awt.Color(50, 161, 91));
+        row0.setBackground(new java.awt.Color(26, 26, 26));
         row0.add(digitButtons[1]);
         row0.add(digitButtons[2]);
         row0.add(digitButtons[3]);
@@ -87,7 +88,7 @@ public class CalculatorScreen {
         southPanel.add(row0);
 
         JPanel row1 = new JPanel();
-        row1.setBackground(new java.awt.Color(153, 153, 102));
+        row1.setBackground(new java.awt.Color(26, 26, 26));
         row1.add(digitButtons[4]);
         row1.add(digitButtons[5]);
         row1.add(digitButtons[6]);
@@ -95,7 +96,7 @@ public class CalculatorScreen {
         southPanel.add(row1);
 
         JPanel row2 = new JPanel();
-        row2.setBackground(new java.awt.Color(51, 102, 0));
+        row2.setBackground(new java.awt.Color(26, 26, 26));
         row2.add(digitButtons[7]);
         row2.add(digitButtons[8]);
         row2.add(digitButtons[9]);
@@ -103,7 +104,7 @@ public class CalculatorScreen {
         southPanel.add(row2);
 
         JPanel row3 = new JPanel();
-        row3.setBackground(new java.awt.Color(138, 226, 38));
+        row3.setBackground(new java.awt.Color(26, 26, 26));
         row3.add(equalButton);
         row3.add(digitButtons[0]);
         row3.add(modButton);
@@ -111,9 +112,28 @@ public class CalculatorScreen {
         southPanel.add(row3);
 
         JPanel row4 = new JPanel();
-        row4.setBackground(new java.awt.Color(81, 112, 46));
+        row4.setBackground(new java.awt.Color(26, 26, 26));
         row4.add(clearButton);
         southPanel.add(row4);
+
+        //Button Colors
+        for(var button: digitButtons) {
+            button.setBackground(Color.LIGHT_GRAY);
+        }
+        clearButton.setBackground(new java.awt.Color(191, 0, 0));
+        clearButton.setForeground(Color.WHITE);
+        addButton.setBackground(Color.GRAY);
+        addButton.setForeground(Color.WHITE);
+        subButton.setBackground(Color.GRAY);
+        subButton.setForeground(Color.WHITE);
+        mulButton.setBackground(Color.GRAY);
+        mulButton.setForeground(Color.WHITE);
+        divButton.setBackground(Color.GRAY);
+        divButton.setForeground(Color.WHITE);
+        modButton.setBackground(Color.GRAY);
+        modButton.setForeground(Color.WHITE);
+        equalButton.setBackground(new java.awt.Color(191, 0, 0));
+        equalButton.setForeground(Color.WHITE);
 
     }
 

@@ -156,7 +156,7 @@ public class ButtonListener implements ActionListener {
                     calculator.setOperator(false);
                     calculator.setResultExists(true);
                     panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + calculator.getOperatorType() +
-                                                "\n" + calculator.getSecond().getNumberText() + "\n" + '=' + "\n" +
+                                                "\n" + calculator.getSecond().getNumberText() + "\n" + "=" + "\n" +
                                                 calculator.getResult().getNumberText());
                 } else {
                     clear();

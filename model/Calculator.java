@@ -73,7 +73,7 @@ public class Calculator {
   
         int currRemainder = 0, prevRemainder = 0;
 
-        for (int i = 29; i >= 0; i--) {
+        for (int i = 39; i >= 0; i--) {
 
             currRemainder = (first.number[i] + second.number[i] + prevRemainder) / 10;
             result.number[i] = (first.number[i] + second.number[i] + prevRemainder) % 10;
@@ -95,7 +95,7 @@ public class Calculator {
     public Error_code subtract() {
 
         // First, check if the left hand side is smaller than right hand side
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 40; i++) {
 
             if(first.number[i] < second.number[i]) {
 
@@ -110,7 +110,7 @@ public class Calculator {
 
         int prevRemainder = 0, subt = 0;
 
-        for (int i = 29; i >= 0; i--) {
+        for (int i = 39; i >= 0; i--) {
             subt = first.number[i] - prevRemainder - second.number[i];
             
             if (subt < 0) {
@@ -147,10 +147,10 @@ public class Calculator {
             right_larger = true;
         }
 
-        for (int i = 29; i >= 0; i--) {
+        for (int i = 39; i >= 0; i--) {
             k = i;
                 
-            for (int j = 29; j >= 0; j--) {
+            for (int j = 39; j >= 0; j--) {
                 if (k < 0) {
                     break;
                 }
@@ -201,13 +201,13 @@ public class Calculator {
 
         double divisor = 0;
  
-        for(int i = 29, j = 0; i >= 0; i--, j++) {
+        for(int i = 39, j = 0; i >= 0; i--, j++) {
             divisor += (second.number[i] * Math.pow(10, j));
         }
 
         double dividend = 0, currRemainder = 0, prevRemainder = 0;
 
-        for(int i = 30 - first.size; i < 30; i++) {
+        for(int i = 40 - first.size; i < 40; i++) {
             dividend = ((prevRemainder * 10) + first.number[i]);
             result.number[i] = (int)(dividend / divisor); 
             currRemainder = (dividend - (result.number[i] * divisor));

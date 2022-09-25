@@ -184,7 +184,7 @@ public class ButtonListener implements ActionListener {
                     first.int_to_text();
                     panel.getDisplay().setText(first.getNumberText());
                 } else {
-                    //Error occurs when max limit of 30 is reached (but it doesn't clear the calculator screen)
+                    //Error occurs when max limit of 40 is reached (but it doesn't clear the calculator screen)
                     error(success);
                 }
 
@@ -199,7 +199,7 @@ public class ButtonListener implements ActionListener {
                     panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + calculator.getOperatorType() +
                                                 "\n" + second.getNumberText());
                 } else {
-                    //Error occurs when max limit of 30 is reached (but it doesn't clear the calculator screen)
+                    //Error occurs when max limit of 40 is reached (but it doesn't clear the calculator screen)
                     error(success);
                 }
             }
@@ -267,7 +267,7 @@ public class ButtonListener implements ActionListener {
         String msg = "";
         switch(code) {
             case INSERTION_FAIL: {
-                msg = "Max unsigned integer limit of 30 achieved. Cannot make number any larger.";
+                msg = "Max unsigned integer limit of 40 achieved. Cannot make number any larger.";
             }
             break;
 

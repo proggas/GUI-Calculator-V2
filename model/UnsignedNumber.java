@@ -9,7 +9,7 @@ public class UnsignedNumber {
     protected String numberText;
     
     public UnsignedNumber() {
-        number = new int[30];
+        number = new int[40];
         size = 1;
         isZero = true;
         numberText = "0";
@@ -19,9 +19,9 @@ public class UnsignedNumber {
         this.size = copy.size;
         this.isZero = copy.isZero;
         this.numberText = copy.numberText;
-        this.number = new int[30];
+        this.number = new int[40];
 
-        for(int i = 30 - this.size; i < 30; i++) {
+        for(int i = 40 - this.size; i < 40; i++) {
             this.number[i] = copy.number[i];
         }
     }
@@ -45,7 +45,7 @@ public class UnsignedNumber {
     //Turns the array into a string
     public void int_to_text() {
         numberText = "";
-        for(int i = 30 - size; i < 30; i++) {
+        for(int i = 40 - size; i < 40; i++) {
             numberText += (char) (number[i] + '0');
         }
     }
@@ -54,7 +54,7 @@ public class UnsignedNumber {
     public void computeSize() {
         int blank_space = 0;
 
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 40; i++)
         {
             if(number[i] != 0)
             {
@@ -66,9 +66,9 @@ public class UnsignedNumber {
             }
         }
 
-        if (blank_space != 30)
+        if (blank_space != 40)
         {
-            size = 30 - blank_space;
+            size = 40 - blank_space;
             isZero = false;
         }
         else
@@ -80,7 +80,7 @@ public class UnsignedNumber {
 
     //Insert number into array
     public Error_code insert(int num) {
-        if(size == 30) {
+        if(size == 40) {
             return Error_code.INSERTION_FAIL;
         }
 
@@ -90,12 +90,12 @@ public class UnsignedNumber {
 
         if(isZero) {
             isZero = false;
-            number[29] = num;
+            number[39] = num;
         } else {
-            for(int i = 30 - size - 1; i < 29; i++) {
+            for(int i = 40 - size - 1; i < 39; i++) {
                 number[i] = number[i + 1];
             }
-            number[29] = num;
+            number[39] = num;
             size++;
         }
         

@@ -1,5 +1,5 @@
 
-# <p align="center">Unsigned Integer Calculator</p>
+# <p align="center">GUI Calculator</p>
    
 <p align="center">
   <img src="https://user-images.githubusercontent.com/80555925/192124043-2cccf40d-8896-4bfa-a9b6-d25d43571787.PNG">

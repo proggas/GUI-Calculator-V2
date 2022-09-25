@@ -1,18 +1,15 @@
 package controller;
 
 import view.CalculatorScreen;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
+import javax.swing.JDialog;
 import model.Calculator;
 import model.UnsignedNumber;
 import model.Calculator.Error_code;
 
-import javax.swing.JDialog;
 
 public class ButtonListener implements ActionListener {
     
@@ -24,12 +21,15 @@ public class ButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var button = (JButton)e.getSource();
-        Calculator calculator = panel.getCalculator();
+        //Get source of button
+        var button = (JButton)e.getSource();  
+        
+        //These variables that are used multiple times so it's more efficient to declare them here
+        Calculator calculator = panel.getCalculator();  
         boolean operatorExists = calculator.isOperator();
         Error_code success = Error_code.SUCCESS;
 
-        
+        //Determine what type of button the source is
         if(button == panel.getAddButton()) {
 
             // This takes care of 2 cases
@@ -43,6 +43,7 @@ public class ButtonListener implements ActionListener {
                 if(success == Error_code.SUCCESS) {
                     multiple_operations(calculator, '+');
                 } else {
+                    //If operation fails, clear screen and display error message
                     clear();
                     error(success);
                 }
@@ -65,6 +66,7 @@ public class ButtonListener implements ActionListener {
                     multiple_operations(calculator, '-');
 
                 } else {
+                    //If operation fails, clear screen and display error message
                     clear();
                     error(success);
                 }
@@ -89,6 +91,7 @@ public class ButtonListener implements ActionListener {
                     multiple_operations(calculator, '*');
 
                 } else {
+                    //If operation fails, clear screen and display error message
                     clear();
                     error(success);
                 }
@@ -112,6 +115,7 @@ public class ButtonListener implements ActionListener {
                     multiple_operations(calculator, '/');
 
                 } else {
+                    //If operation fails, clear screen and display error message
                     clear();
                     error(success);
                 }
@@ -134,6 +138,7 @@ public class ButtonListener implements ActionListener {
                     multiple_operations(calculator, '%');
 
                 } else {
+                    //If operation fails, clear screen and display error message
                     clear();
                     error(success);
                 }
@@ -143,6 +148,7 @@ public class ButtonListener implements ActionListener {
             }
 
         } else if(button == panel.getClearButton()) {
+            //Clears calculator screen
             clear();
 
         } else if(button == panel.getEqualButton()) {
@@ -152,13 +158,17 @@ public class ButtonListener implements ActionListener {
                 success = doOperation(calculator);
 
                 if(success == Error_code.SUCCESS) {
-                    // Set operator to FALSE and result to TRUE
+                    //Set 'operator' to FALSE and 'resultExists' to TRUE since an operation has been completed
+                    //and the resulting number is placed into 'result'
                     calculator.setOperator(false);
                     calculator.setResultExists(true);
+
+                    //Display first (operator) second = result
                     panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + calculator.getOperatorType() +
                                                 "\n" + calculator.getSecond().getNumberText() + "\n" + "=" + "\n" +
                                                 calculator.getResult().getNumberText());
                 } else {
+                    //If operation fails, clear screen and display error message
                     clear();
                     error(success);
                 }
@@ -193,7 +203,7 @@ public class ButtonListener implements ActionListener {
                 UnsignedNumber second = calculator.getSecond();
                 success = second.insert(button.getText().charAt(0) - '0');
 
-                //If insertion successful, display number
+                //If insertion successful, display first (operator) second
                 if(success == Error_code.SUCCESS) {
                     second.int_to_text();
                     panel.getDisplay().setText(calculator.getFirst().getNumberText() + "\n" + calculator.getOperatorType() +
@@ -292,14 +302,15 @@ public class ButtonListener implements ActionListener {
             break;
         }
 
+        //Displays the message to user
         JOptionPane optionPane = new JOptionPane();
         optionPane.setMessage(msg);
         JDialog dialog = optionPane.createDialog(null, "Error");
         dialog.setVisible(true);
     }
 
-    // Method called when multiple operations are at work or if an operation is called
-    // right after using equals button
+    //Method called when multiple operations are at work or if an operation is called
+    //right after using equals button
     public void multiple_operations(Calculator calculator, char op) {
         UnsignedNumber result = calculator.getResult();
         calculator.setFirst(result);

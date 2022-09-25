@@ -4,17 +4,16 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
 import controller.ButtonListener;
 import model.Calculator;
 
 public class CalculatorScreen {
 
+    //Calculator visual components
     private JFrame window;
     private Calculator calculator;
     private JTextArea display;
@@ -41,10 +40,14 @@ public class CalculatorScreen {
         digitButtons = new JButton[10];
     }
 
+    //Builds calculator visual
+    //Calculator has 2 main parts:
+    //  - Display (located north)
+    //  - Buttons (located south)
     public void init() {
         Container cp = window.getContentPane();
 
-        //Sets up display
+        //Set up display
         JPanel northPanel = new JPanel();
         northPanel.setPreferredSize(new Dimension(300, 100));
         northPanel.add(display);
@@ -56,19 +59,23 @@ public class CalculatorScreen {
         display.setBackground(new java.awt.Color(240, 240, 240));
         cp.add(northPanel, BorderLayout.NORTH);
 
-        //Sets up buttons
+        //Set up buttons
         JPanel southPanel = new JPanel();
         cp.add(southPanel, BorderLayout.SOUTH);
         southPanel.setPreferredSize(new Dimension(300, 185));
         southPanel.setLayout(new GridLayout(5, 1));
-
+        
         ButtonListener listener = new ButtonListener(this);
+
+        //Make digit buttons, add listeners to each digit button, and change the color
+        //of each digit button (doing it all at once prevents the use of multiple loops)
         for(int i = 0; i < 10; i++) {
             digitButtons[i] = new JButton("" + i);
             digitButtons[i].addActionListener(listener);
+            digitButtons[i].setBackground(Color.LIGHT_GRAY);
         }
 
-        //Add Listeners to Buttons
+        //Add the listener to the other buttons
         addButton.addActionListener(listener);
         subButton.addActionListener(listener);
         divButton.addActionListener(listener);
@@ -116,10 +123,7 @@ public class CalculatorScreen {
         row4.add(clearButton);
         southPanel.add(row4);
 
-        //Button Colors
-        for(var button: digitButtons) {
-            button.setBackground(Color.LIGHT_GRAY);
-        }
+        //Change the rest of the button colors
         clearButton.setBackground(new java.awt.Color(191, 0, 0));
         clearButton.setForeground(Color.WHITE);
         addButton.setBackground(Color.GRAY);
@@ -137,6 +141,7 @@ public class CalculatorScreen {
 
     }
 
+    //Getters
     public JButton[] getDigitButtons() {
         return digitButtons;
     }

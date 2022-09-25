@@ -2,6 +2,8 @@ package model;
 
 public class Calculator {
 
+    //All operations return an Error_code that is used to determine whether the operation was successful or not
+    //If an operation is not successful, the Error_code determines the error message the user will receive
     public enum Error_code {INSERTION_FAIL, DIVIDE_BY_ZERO, LEFT_HAND_SMALLER, SUCCESS, NUMBER_OVERFLOW};
 
     private UnsignedNumber first;
@@ -20,6 +22,7 @@ public class Calculator {
         operatorType = '+';
     }
 
+    //Getters
     public UnsignedNumber getFirst() {
         return first;
     }
@@ -44,6 +47,7 @@ public class Calculator {
         return resultExists;
     }
 
+    //Setters
     public void setOperator(boolean operator) {
         this.operator = operator;
     }
@@ -73,12 +77,11 @@ public class Calculator {
   
         int currRemainder = 0, prevRemainder = 0;
 
+        //Addition Algorithm
         for (int i = 39; i >= 0; i--) {
-
             currRemainder = (first.number[i] + second.number[i] + prevRemainder) / 10;
             result.number[i] = (first.number[i] + second.number[i] + prevRemainder) % 10;
             prevRemainder = currRemainder;
-
         }
             
         if (currRemainder >= 1) {
@@ -110,6 +113,7 @@ public class Calculator {
 
         int prevRemainder = 0, subt = 0;
 
+        //Subtraction Algorithm
         for (int i = 39; i >= 0; i--) {
             subt = first.number[i] - prevRemainder - second.number[i];
             
@@ -163,6 +167,7 @@ public class Calculator {
                         exceedLimit = true;
                     }
 
+                    //Multiplication Algorithm
                     result.number[k] += currMultiple % 10;
                     currRemainder = (currMultiple / 10) + result.number[k] / 10;
                     result.number[k] %= 10;
@@ -191,7 +196,7 @@ public class Calculator {
         return Error_code.SUCCESS;
     }
 
-    // Method that divides first and second
+    //Method that divides first and second
     public Error_code divide() {
 
         //Check if divisor is 0
@@ -200,13 +205,15 @@ public class Calculator {
         }
 
         double divisor = 0;
- 
+        
+        //Put divisor into a double variable
         for(int i = 39, j = 0; i >= 0; i--, j++) {
             divisor += (second.number[i] * Math.pow(10, j));
         }
 
         double dividend = 0, currRemainder = 0, prevRemainder = 0;
 
+        //Division Algorithm
         for(int i = 40 - first.size; i < 40; i++) {
             dividend = ((prevRemainder * 10) + first.number[i]);
             result.number[i] = (int)(dividend / divisor); 

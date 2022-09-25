@@ -276,6 +276,13 @@ public class Calculator {
 
     // Method that multiplies first and second
     public Error_code multiply() {
+        //First check how many operands are negative to determine whether
+        //the result is negative or not
+
+        //Both negative or positive = positive result, else result is negative
+        result.isNeg = ((first.isNeg && second.isNeg) || (!first.isNeg && !second.isNeg)) ? false : true;
+    
+
         int currRemainder = 0, prevRemainder = 0, currMultiple = 0;
         int k = 0;
         boolean right_larger = false, exceedLimit = false;
@@ -343,6 +350,12 @@ public class Calculator {
             return Error_code.DIVIDE_BY_ZERO;
         }
 
+        //Next check how many operands are negative to determine whether
+        //the result is negative or not
+
+        //Both negative or positive = positive result, else result is negative
+        result.isNeg = ((first.isNeg && second.isNeg) || (!first.isNeg && !second.isNeg)) ? false : true;
+
         double divisor = 0;
         
         //Put divisor into a double variable
@@ -368,8 +381,13 @@ public class Calculator {
 
     public Error_code modulo() {
 
+        //Before doing any arithmetic, check if the second operand is
+        //0 or negative
         if(second.isZero) {
             result = new Number(first);
+            return Error_code.SUCCESS;
+        } else if(second.isNeg) {
+            result = new Number();
             return Error_code.SUCCESS;
         }
 
@@ -401,6 +419,19 @@ public class Calculator {
         //4. First and result are correct
         //   The only thing that needs to be changed back is second
         second = first_sec_temp;
+
+        //5. Check if the result is negative
+        //   If so, keep adding the second operand to it until it is no longer negative
+        if (result.isNeg) {
+            first_sec_temp = first;
+
+            while(result.isNeg) {
+                first = result;
+                add();
+            }
+
+            first = first_sec_temp;
+        }
 
         result.computeSize();
         result.int_to_text();

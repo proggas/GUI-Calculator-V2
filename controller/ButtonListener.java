@@ -319,11 +319,7 @@ public class ButtonListener implements ActionListener {
                 msg = "Cannot divide by 0.";
             }
             break;
-
-            case LEFT_HAND_SMALLER: {
-                msg = "Cannot have a negative result.";
-            }
-            break;
+            
 
             case SUCCESS: {
                 msg = "Error_code = SUCCESS. Error in program.";
